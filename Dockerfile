@@ -13,9 +13,12 @@ RUN npm install
 
 COPY . .
 
+RUN mkdir -p /home/node/app/node_modules && \
+    chown -R node:node /home/node/app
+
 USER node
 
 EXPOSE 3000
 EXPOSE 9229
 
-CMD ["node", "--inspect=0.0.0.0", "main.js"]
+CMD ["npm", "run", "dev"]
