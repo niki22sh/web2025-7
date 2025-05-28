@@ -7,7 +7,7 @@ ENV NODE_ENV=development
 
 WORKDIR /usr/src/app
 
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 RUN npm install
 
@@ -21,4 +21,4 @@ USER node
 EXPOSE 3000
 EXPOSE 9229
 
-CMD ["npm", "run", "dev"]
+CMD ["npx", "nodemon", "-L", "--inspect=0.0.0.0", "main.js"]
