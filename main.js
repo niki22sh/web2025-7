@@ -1,13 +1,11 @@
 const { Pool } = require('pg');
 const express = require("express");
-const multer = require("multer")
 
 require('dotenv').config();
 
 const app = express();
 app.use(express.text());
 app.use(express.json());
-const upload = multer();
 
 const PORT = process.env.PORT
 const HOST = process.env.HOST
@@ -29,7 +27,7 @@ async function deviceExists(serialNumber){
   }
 }
 
-app.post('/register', upload.none(), async (req, res) =>{
+app.post('/register', async(req, res) =>{
   const {device_name, serial_number} = req.body;
   if(await deviceExists(serial_number)){
     res.status(400).send('Bad request');
@@ -44,7 +42,7 @@ app.get('/devices', async(req, res) =>{
   res.json(result.rows);
 })
 
-app.post('/take', upload.none(), async(req, res) => {
+app.post('/take', async(req, res) => {
   const {user_name, serial_number} = req.body;
   const device = await db.query(
       'SELECT * FROM devices WHERE serial_number = $1', [serial_number]);
@@ -71,7 +69,7 @@ app.get('/devices/:serialNumber', async(req, res) =>{
   }
 })
 
-app.post('/back', upload.none(), async(req, res) => {
+app.post('/back', async(req, res) => {
   const {user_name, serial_number} = req.body;
 
     if(!await deviceExists(serial_number)) {
